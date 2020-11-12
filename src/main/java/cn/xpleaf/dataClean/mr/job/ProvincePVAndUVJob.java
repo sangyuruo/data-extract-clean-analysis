@@ -61,5 +61,6 @@ public class ProvincePVAndUVJob {
         job.setNumReduceTasks(1);
 
         job.waitForCompletion(true);
+        System.out.println("ProvincePVAndUVJob finish ..............");
     }
 }
