@@ -80,9 +80,13 @@ public class AccessLogCleanMapper extends Mapper<LongWritable, Text, NullWritabl
         ip = fields[1];
         // 解析IP
         if (ip != null) {
-            String ipInfo = jedis.hget("ip_info", ip);
-            province = ipInfo.split("\t")[0];
-            city = ipInfo.split("\t")[1];
+                String ipInfo = jedis.hget("ip_info", ip);
+                if (null != ipInfo && !"".equals(ipInfo)) {
+                    province = ipInfo.split(";")[0];
+                    city = ipInfo.split(";")[1];
+                } else {
+                    System.out.println("ipInfo is null");
+                }
         }
 
         mid = fields[2];

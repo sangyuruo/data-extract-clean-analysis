@@ -20,51 +20,88 @@
 	<!--指定hdfs的nameservice为ns1，需要和core-site.xml中的保持一致 -->
 	<property>
 	    <name>dfs.nameservices</name>
-	    <value>ns1</value>
+	    <value>zvosCluster</value>
 	</property>
 	<!-- ns1下面有两个NameNode，分别是nn1，nn2 -->
 	<property>
-	    <name>dfs.ha.namenodes.ns1</name>
-	    <value>nn1,nn2</value>
+	    <name>dfs.ha.namenodes.zvosCluster</name>
+		<value>nn1,nn2</value>
+	    <!--<value>nn1,nn2</value>-->
 	</property>
-	<!-- nn1的RPC通信地址 -->
+
 	<property>
-	    <name>dfs.namenode.rpc-address.ns1.nn1</name>
-	    <value>uplooking01:9000</value>
+		<name>dfs.namenode.rpc-address.zvosCluster.nn2</name>
+		<value>hdp02.com:8020</value>
 	</property>
-	<!-- nn1的http通信地址 -->
 	<property>
-	    <name>dfs.namenode.http-address.ns1.nn1</name>
-	    <value>uplooking01:50070</value>
+		<name>dfs.namenode.rpc-address.zvosCluster.nn1</name>
+		<value>hdp01.com:8020</value>
 	</property>
-	<!-- nn2的RPC通信地址 -->
 	<property>
-	    <name>dfs.namenode.rpc-address.ns1.nn2</name>
-	    <value>uplooking02:9000</value>
+		<name>dfs.namenode.http-address.zvosCluster.nn2</name>
+		<value>hdp02.com:50070</value>
 	</property>
-	<!-- nn2的http通信地址 -->
 	<property>
-	    <name>dfs.namenode.http-address.ns1.nn2</name>
-	    <value>uplooking02:50070</value>
+		<name>dfs.namenode.http-address.zvosCluster.nn1</name>
+		<value>hdp01.com:50070</value>
 	</property>
+	<!--&lt;!&ndash; nn1的RPC通信地址 &ndash;&gt;-->
+	<!--<property>-->
+	    <!--<name>dfs.namenode.rpc-address.ns1.nn1</name>-->
+	    <!--<value>uplooking01:9000</value>-->
+	<!--</property>-->
+	<!--&lt;!&ndash; nn1的http通信地址 &ndash;&gt;-->
+	<!--<property>-->
+	    <!--<name>dfs.namenode.http-address.ns1.nn1</name>-->
+	    <!--<value>uplooking01:50070</value>-->
+	<!--</property>-->
+	<!--&lt;!&ndash; nn2的RPC通信地址 &ndash;&gt;-->
+	<!--<property>-->
+	    <!--<name>dfs.namenode.rpc-address.ns1.nn2</name>-->
+	    <!--<value>uplooking02:9000</value>-->
+	<!--</property>-->
+	<!--&lt;!&ndash; nn2的http通信地址 &ndash;&gt;-->
+	<!--<property>-->
+	    <!--<name>dfs.namenode.http-address.ns1.nn2</name>-->
+	    <!--<value>uplooking02:50070</value>-->
+	<!--</property>-->
 	<!-- 指定NameNode的元数据在JournalNode上的存放位置 -->
 	<property>
-	    <name>dfs.namenode.shared.edits.dir</name>
-	    <value>qjournal://uplooking01:8485;uplooking02:8485;uplooking03:8485/ns1</value>
+		<name>dfs.namenode.shared.edits.dir</name>
+		<value>
+			qjournal://hdp03.com:8485;hdp04.com:8485;hdp05.com:8485/zvosCluster
+		</value>
 	</property>
+
+	<!--<property>-->
+	    <!--<name>dfs.namenode.shared.edits.dir</name>-->
+	    <!--<value>qjournal://uplooking01:8485;uplooking02:8485;uplooking03:8485/ns1</value>-->
+	<!--</property>-->
 	<!-- 指定JournalNode在本地磁盘存放数据的位置 -->
 	<property>
-	    <name>dfs.journalnode.edits.dir</name>
-	    <value>/home/uplooking/data/hadoop/journal</value>
+		<name>dfs.journalnode.edits.dir</name>
+		<value>/hadoop/hdfs/journal</value>
 	</property>
-	<property>  
-	    <name>dfs.namenode.name.dir</name>  
-	    <value>/home/uplooking/data/hadoop/name</value>  
-	</property>  
-	<property>  
-	    <name>dfs.datanode.data.dir</name>  
-	    <value>/home/uplooking/data/hadoop/data</value>  
-	</property> 
+	<property>
+		<name>dfs.namenode.name.dir</name>
+		<value>/hadoop/hdfs/namenode</value>
+	</property>
+	<property>
+		<name>dfs.datanode.data.dir</name>
+		<value>/hadoop/hdfs/data</value>
+	</property>
+	<!--<property>-->
+	    <!--<name>dfs.journalnode.edits.dir</name>-->
+	    <!--<value>/home/uplooking/data/hadoop/journal</value>-->
+	<!--</property>-->
+	<!--<property>  -->
+	    <!--<name>dfs.namenode.name.dir</name>  -->
+	    <!--<value>/home/uplooking/data/hadoop/name</value>  -->
+	<!--</property>  -->
+	<!--<property>  -->
+	    <!--<name>dfs.datanode.data.dir</name>  -->
+	    <!--<value>/home/uplooking/data/hadoop/data</value>  -->
+	<!--</property> -->
 	<!-- 开启NameNode失败自动切换 -->
 	<property>
 	    <name>dfs.ha.automatic-failover.enabled</name>
@@ -72,7 +109,13 @@
 	</property>
 	<!-- 配置失败自动切换实现方式 -->
 	<property>
-	    <name>dfs.client.failover.proxy.provider.ns1</name>
-	    <value>org.apache.hadoop.hdfs.server.namenode.ha.ConfiguredFailoverProxyProvider</value>
+		<name>dfs.client.failover.proxy.provider.zvosCluster</name>
+		<value>
+			org.apache.hadoop.hdfs.server.namenode.ha.ConfiguredFailoverProxyProvider
+		</value>
 	</property>
+	<!--<property>-->
+	    <!--<name>dfs.client.failover.proxy.provider.ns1</name>-->
+	    <!--<value>org.apache.hadoop.hdfs.server.namenode.ha.ConfiguredFailoverProxyProvider</value>-->
+	<!--</property>-->
 </configuration>
